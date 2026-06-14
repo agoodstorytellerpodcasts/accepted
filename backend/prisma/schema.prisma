@@ -1,0 +1,248 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./omnireach.db"
+}
+
+model User {
+  id                    String              @id @default(uuid())
+  email                 String              @unique
+  password_hash         String
+  full_name             String
+  stripe_customer_id    String?
+  stripe_subscription_id String?
+  subscription_tier_id  String?
+  created_at            DateTime            @default(now())
+  updated_at            DateTime            @updatedAt
+  subscription_tier     SubscriptionTier?   @relation(fields: [subscription_tier_id], references: [id])
+  social_accounts       SocialAccount[]
+  campaigns             Campaign[]
+  scheduled_content     ScheduledContent[]
+  chat_sessions         ChatSession[]
+  competitor_trackers   CompetitorTracker[]
+  daily_metrics         DailyMetric[]
+  payments              Payment[]
+
+  @@map("users")
+}
+
+model SubscriptionTier {
+  id             String   @id @default(uuid())
+  name           String
+  monthly_price  Float
+  max_campaigns  Int
+  max_reach      Int
+  stripe_price_id String?
+  features_json  String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  users          User[]
+
+  @@map("subscription_tiers")
+}
+
+model SocialAccount {
+  id                     String    @id @default(uuid())
+  user_id                String
+  platform               String
+  platform_account_id    String
+  platform_username      String?
+  access_token           String
+  refresh_token          String?
+  token_expires_at       DateTime?
+  token_type             String?
+  token_scope            String?
+  webhook_subscription_id String?
+  webhook_active         Boolean   @default(false)
+  is_active              Boolean   @default(true)
+  last_synced_at         DateTime?
+  sync_frequency_minutes Int       @default(15)
+  rate_limit_remaining   Int?
+  rate_limit_reset_at    DateTime?
+  profile_metadata_json  String?
+  created_at             DateTime  @default(now())
+  updated_at             DateTime  @updatedAt
+  user                   User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, platform])
+  @@index([platform, platform_account_id])
+  @@map("social_accounts")
+}
+
+model Campaign {
+  id         String            @id @default(uuid())
+  user_id    String
+  name       String
+  type       String
+  status     String            @default("draft")
+  budget     Float             @default(0)
+  created_at DateTime          @default(now())
+  updated_at DateTime          @updatedAt
+  user       User              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  variants   CampaignVariant[]
+
+  @@map("campaigns")
+}
+
+model CampaignVariant {
+  id                     String          @id @default(uuid())
+  campaign_id            String
+  name                   String
+  target_parameters_json String?
+  content_metadata_json  String?
+  is_baseline            Boolean         @default(false)
+  performance_score      Float           @default(0)
+  created_at             DateTime        @default(now())
+  updated_at             DateTime        @updatedAt
+  campaign               Campaign        @relation(fields: [campaign_id], references: [id], onDelete: Cascade)
+  events                 CampaignEvent[]
+
+  @@map("campaign_variants")
+}
+
+model CampaignEvent {
+  id            String          @id @default(uuid())
+  variant_id    String
+  event_type    String
+  platform      String
+  metadata_json String?
+  timestamp     DateTime        @default(now())
+  variant       CampaignVariant @relation(fields: [variant_id], references: [id], onDelete: Cascade)
+
+  @@map("campaign_events")
+}
+
+model ScheduledContent {
+  id           String          @id @default(uuid())
+  user_id      String
+  platform     String
+  content_json String
+  scheduled_at DateTime
+  published_at DateTime?
+  status       String          @default("pending")
+  created_at   DateTime        @default(now())
+  updated_at   DateTime        @updatedAt
+  user         User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("scheduled_content")
+}
+
+model ChatSession {
+  id         String        @id @default(uuid())
+  user_id    String
+  title      String?
+  created_at DateTime      @default(now())
+  updated_at DateTime      @updatedAt
+  user       User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  messages   ChatMessage[]
+
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id              String      @id @default(uuid())
+  session_id      String
+  role            String
+  content         String
+  tool_calls_json String?
+  timestamp       DateTime    @default(now())
+  session         ChatSession @relation(fields: [session_id], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+model CompetitorTracker {
+  id              String    @id @default(uuid())
+  user_id         String
+  platform        String
+  handle          String
+  last_scraped_at DateTime?
+  insights_json   String?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("competitor_trackers")
+}
+
+model DailyMetric {
+  id          String   @id @default(uuid())
+  user_id     String
+  platform    String
+  metric_name String
+  value       Float    @default(0)
+  date        DateTime
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, platform, date])
+  @@map("daily_metrics")
+}
+
+model Payment {
+  id                String   @id @default(uuid())
+  user_id           String
+  stripe_session_id String   @unique
+  amount            Float
+  currency          String
+  status            String
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+  user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model IndexingRequest {
+  id        String   @id @default(uuid())
+  user_id   String
+  url       String
+  type      String   @default("URL_UPDATED")
+  status    String   @default("pending")
+  response  String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("indexing_requests")
+}
+
+model GoogleBusinessProfile {
+  id            String   @id @default(uuid())
+  user_id       String
+  location_id   String   @unique
+  account_id    String
+  business_name String
+  metadata_json String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("google_business_profiles")
+}
+
+model LandingPage {
+  id            String   @id @default(uuid())
+  user_id       String
+  campaign_id   String?
+  slug          String   @unique
+  title         String
+  content_json  String
+  seo_metadata  String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("landing_pages")
+}
+
+model Sitemap {
+  id               String    @id @default(uuid())
+  user_id          String
+  url              String
+  content          String
+  last_submitted_at DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  @@map("sitemaps")
+}

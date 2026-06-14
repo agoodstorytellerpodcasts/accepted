@@ -1,0 +1,8 @@
+node_modules
+*.db
+.env
+dist
+logs
+.next
+build
+out
