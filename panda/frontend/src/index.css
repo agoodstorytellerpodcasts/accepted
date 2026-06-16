@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --color-brand-slate: #0F172A;
+  --color-brand-green: #10B981;
+  --color-brand-green-dark: #059669;
+}
+
+@layer base {
+  html {
+    font-family: "Inter", sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Plus Jakarta Sans", sans-serif;
+  }
+}
+
+/* Custom styles */
+.brand-gradient-text {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-gradient-bg {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+}
+
+.premium-dark-bg {
+  background: radial-gradient(circle, #1E293B 0%, #0F172A 100%);
+}
