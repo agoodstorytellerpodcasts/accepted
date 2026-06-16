@@ -97,9 +97,9 @@ app.listen(PORT, '0.0.0.0', () => {
 
 function generateProfessionalSiteHtml(name, industry, desc, color) {
   const colors = {
-    'modern-slate': { primary: '#0F172A', accent: '#10B981', light: '#F8FAFC' },
-    'ocean-blue': { primary: '#1E40AF', accent: '#38BDF8', light: '#F0F9FF' },
-    'sunset-orange': { primary: '#7C2D12', accent: '#FB923C', light: '#FFF7ED' }
+    'modern-slate': { primary: '#0F172A', accent: '#10B981', accentdark: '#059669', light: '#F8FAFC' },
+    'ocean-blue': { primary: '#1E40AF', accent: '#38BDF8', accentdark: '#0284C7', light: '#F0F9FF' },
+    'sunset-orange': { primary: '#7C2D12', accent: '#FB923C', accentdark: '#EA580C', light: '#FFF7ED' }
   };
   
   const theme = colors[color] || colors['modern-slate'];
@@ -145,6 +145,7 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
             colors: {
               primary: '${theme.primary}',
               accent: '${theme.accent}',
+              accentdark: '${theme.accentdark}',
               brandlight: '${theme.light}',
             },
             fontFamily: {
@@ -171,7 +172,7 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
                 <a href="#about" class="hover:text-accent transition-colors">About</a>
                 <a href="#contact" class="hover:text-accent transition-colors">Contact</a>
             </div>
-            <button class="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg">
+            <button class="bg-accent text-primary px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg">
                 Get Started
             </button>
         </div>
@@ -192,7 +193,7 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
                     ${desc}
                 </p>
                 <div class="flex flex-wrap gap-6">
-                    <a href="#contact" class="bg-primary text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-primary/20 transition-all">
+                    <a href="#contact" class="bg-accent text-primary px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-accent/20 transition-all">
                         Start your journey
                     </a>
                     <a href="#services" class="group flex items-center gap-3 font-bold text-primary">
@@ -269,7 +270,7 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
                 <input type="text" class="w-full px-8 py-5 rounded-3xl border-none ring-2 ring-primary/5 focus:ring-accent outline-none transition-all shadow-sm font-bold placeholder:text-slate-400" placeholder="Your Name">
                 <input type="email" class="w-full px-8 py-5 rounded-3xl border-none ring-2 ring-primary/5 focus:ring-accent outline-none transition-all shadow-sm font-bold placeholder:text-slate-400" placeholder="Email Address">
                 <textarea rows="4" class="sm:col-span-2 w-full px-8 py-5 rounded-3xl border-none ring-2 ring-primary/5 focus:ring-accent outline-none transition-all shadow-sm font-bold placeholder:text-slate-400 resize-none" placeholder="How can we help?"></textarea>
-                <button class="sm:col-span-2 bg-primary text-white py-6 rounded-3xl font-black text-xl hover:bg-slate-800 transition-all shadow-xl shadow-primary/20 tracking-widest uppercase">
+                <button class="sm:col-span-2 bg-accent text-primary py-6 rounded-3xl font-black text-xl hover:bg-accentdark transition-all shadow-xl shadow-accent/20 tracking-widest uppercase">
                     Connect Now
                 </button>
             </form>
