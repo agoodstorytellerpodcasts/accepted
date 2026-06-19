@@ -1,0 +1,5 @@
+node_modules
+panda.db
+backend/generated_sites/
+dist
+.env
