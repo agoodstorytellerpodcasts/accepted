@@ -97,9 +97,9 @@ app.listen(PORT, '0.0.0.0', () => {
 
 function generateProfessionalSiteHtml(name, industry, desc, color) {
   const colors = {
-    'modern-slate': { primary: '#0F172A', accent: '#10B981', accentdark: '#059669', light: '#F8FAFC' },
-    'ocean-blue': { primary: '#1E40AF', accent: '#38BDF8', accentdark: '#0284C7', light: '#F0F9FF' },
-    'sunset-orange': { primary: '#7C2D12', accent: '#FB923C', accentdark: '#EA580C', light: '#FFF7ED' }
+    'modern-slate': { primary: '#0F172A', accent: '#10B981', light: '#F8FAFC' },
+    'ocean-blue': { primary: '#1E40AF', accent: '#38BDF8', light: '#F0F9FF' },
+    'sunset-orange': { primary: '#7C2D12', accent: '#FB923C', light: '#FFF7ED' }
   };
   
   const theme = colors[color] || colors['modern-slate'];
@@ -112,6 +112,8 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
     { title: 'Market Integration', desc: 'Seamlessly expanding your brand presence across all relevant channels.' }
   ];
   let heroImage = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200";
+  let heroHeadline = "We redefine <br/><span class=\"text-accent italic\">excellence.</span>";
+  let tagLine = `Premier ${industry} Partner`;
 
   if (industryLower.includes('food') || industryLower.includes('restaurant') || industryLower.includes('bakery')) {
     services = [
@@ -120,6 +122,8 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
       { title: 'Private Dining', desc: 'Intimate spaces and personalized culinary journeys for your special moments.' }
     ];
     heroImage = "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=1200";
+    heroHeadline = "Taste the <br/><span class=\"text-accent italic\">extraordinary.</span>";
+    tagLine = "Artisanal Culinary Experiences";
   } else if (industryLower.includes('tech') || industryLower.includes('software') || industryLower.includes('startup')) {
     services = [
       { title: 'Custom Software', desc: 'Building scalable, high-performance applications tailored to your goals.' },
@@ -127,6 +131,44 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
       { title: 'AI Integration', desc: 'Harnessing the power of machine learning to drive business intelligence.' }
     ];
     heroImage = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1200";
+    heroHeadline = "Engineering the <br/><span class=\"text-accent italic\">future.</span>";
+    tagLine = "Next-Generation Technology";
+  } else if (industryLower.includes('real estate') || industryLower.includes('property') || industryLower.includes('housing')) {
+    services = [
+      { title: 'Luxury Listings', desc: 'Exclusive access to the most prestigious properties in the market.' },
+      { title: 'Property Management', desc: 'Hands-free ownership with our comprehensive management solutions.' },
+      { title: 'Market Analysis', desc: 'Deep insights to ensure your investments yield maximum returns.' }
+    ];
+    heroImage = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1200";
+    heroHeadline = "Find your <br/><span class=\"text-accent italic\">sanctuary.</span>";
+    tagLine = "Exclusive Real Estate Services";
+  } else if (industryLower.includes('law') || industryLower.includes('legal') || industryLower.includes('attorney')) {
+    services = [
+      { title: 'Corporate Law', desc: 'Protecting your business interests with precise and proactive counsel.' },
+      { title: 'Intellectual Property', desc: 'Securing your innovations and brand identity in a global market.' },
+      { title: 'Dispute Resolution', desc: 'Navigating complex litigations with strategic and decisive action.' }
+    ];
+    heroImage = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1200";
+    heroHeadline = "Advocacy with <br/><span class=\"text-accent italic\">integrity.</span>";
+    tagLine = "Elite Legal Representation";
+  } else if (industryLower.includes('fitness') || industryLower.includes('gym') || industryLower.includes('wellness') || industryLower.includes('health')) {
+    services = [
+      { title: 'Personal Training', desc: 'One-on-one coaching designed to push your limits and achieve results.' },
+      { title: 'Nutritional Planning', desc: 'Science-backed meal strategies to fuel your body and your goals.' },
+      { title: 'Group Evolution', desc: 'High-energy classes that build strength and community simultaneously.' }
+    ];
+    heroImage = "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1200";
+    heroHeadline = "Unleash your <br/><span class=\"text-accent italic\">potential.</span>";
+    tagLine = "Transformative Fitness & Wellness";
+  } else if (industryLower.includes('agency') || industryLower.includes('creative') || industryLower.includes('marketing') || industryLower.includes('design')) {
+    services = [
+      { title: 'Brand Identity', desc: 'Crafting visual stories that resonate and endure in the modern mind.' },
+      { title: 'Digital Strategy', desc: 'Innovative campaigns that drive engagement and convert audiences.' },
+      { title: 'Experience Design', desc: 'Building intuitive digital products that users love to navigate.' }
+    ];
+    heroImage = "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200";
+    heroHeadline = "Ideas that <br/><span class=\"text-accent italic\">inspire.</span>";
+    tagLine = "Award-Winning Creative Studio";
   }
 
   return `
@@ -135,7 +177,7 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${name} | Professional ${industry} Services</title>
+    <title>${name} | ${industry}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script>
@@ -145,7 +187,6 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
             colors: {
               primary: '${theme.primary}',
               accent: '${theme.accent}',
-              accentdark: '${theme.accentdark}',
               brandlight: '${theme.light}',
             },
             fontFamily: {
@@ -172,7 +213,7 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
                 <a href="#about" class="hover:text-accent transition-colors">About</a>
                 <a href="#contact" class="hover:text-accent transition-colors">Contact</a>
             </div>
-            <button class="bg-accent text-primary px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg">
+            <button class="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg">
                 Get Started
             </button>
         </div>
@@ -184,16 +225,16 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
         <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
             <div>
                 <div class="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-xs font-black uppercase tracking-[0.2em] mb-8">
-                    Premier ${industry} Partner
+                    ${tagLine}
                 </div>
                 <h1 class="text-6xl lg:text-8xl font-extrabold leading-[0.9] mb-8 text-primary tracking-tighter">
-                    We redefine <br/><span class="text-accent italic">excellence.</span>
+                    ${heroHeadline}
                 </h1>
                 <p class="text-xl text-slate-500 mb-12 leading-relaxed max-w-xl font-medium">
                     ${desc}
                 </p>
                 <div class="flex flex-wrap gap-6">
-                    <a href="#contact" class="bg-accent text-primary px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-accent/20 transition-all">
+                    <a href="#contact" class="bg-primary text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-primary/20 transition-all">
                         Start your journey
                     </a>
                     <a href="#services" class="group flex items-center gap-3 font-bold text-primary">
@@ -270,7 +311,7 @@ function generateProfessionalSiteHtml(name, industry, desc, color) {
                 <input type="text" class="w-full px-8 py-5 rounded-3xl border-none ring-2 ring-primary/5 focus:ring-accent outline-none transition-all shadow-sm font-bold placeholder:text-slate-400" placeholder="Your Name">
                 <input type="email" class="w-full px-8 py-5 rounded-3xl border-none ring-2 ring-primary/5 focus:ring-accent outline-none transition-all shadow-sm font-bold placeholder:text-slate-400" placeholder="Email Address">
                 <textarea rows="4" class="sm:col-span-2 w-full px-8 py-5 rounded-3xl border-none ring-2 ring-primary/5 focus:ring-accent outline-none transition-all shadow-sm font-bold placeholder:text-slate-400 resize-none" placeholder="How can we help?"></textarea>
-                <button class="sm:col-span-2 bg-accent text-primary py-6 rounded-3xl font-black text-xl hover:bg-accentdark transition-all shadow-xl shadow-accent/20 tracking-widest uppercase">
+                <button class="sm:col-span-2 bg-primary text-white py-6 rounded-3xl font-black text-xl hover:bg-slate-800 transition-all shadow-xl shadow-primary/20 tracking-widest uppercase">
                     Connect Now
                 </button>
             </form>
