@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles, Zap, Globe, BarChart3, Check } from 'lucide-react';
 import Logo from '../components/Logo';
+import { useAuth } from '../context/AuthContext';
 
 function LandingPage() {
   const [prompt, setPrompt] = useState('');
+  const { token } = useAuth();
   const navigate = useNavigate();
 
   const handleStartBuilding = (e) => {
@@ -26,9 +28,15 @@ function LandingPage() {
               <a href="#features" className="text-slate-600 hover:text-brand-green transition-colors">Features</a>
               <a href="#how-it-works" className="text-slate-600 hover:text-brand-green transition-colors">How it Works</a>
               <a href="#pricing" className="text-slate-600 hover:text-brand-green transition-colors">Pricing</a>
-              <Link to="/builder" className="bg-brand-slate text-white px-6 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg hover:shadow-brand-green/10">
-                Sign In
-              </Link>
+              {token ? (
+                <Link to="/dashboard" className="bg-brand-slate text-white px-6 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg hover:shadow-brand-green/10">
+                  Dashboard
+                </Link>
+              ) : (
+                <Link to="/login" className="bg-brand-slate text-white px-6 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg hover:shadow-brand-green/10">
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
         </div>

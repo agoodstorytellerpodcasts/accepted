@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader2, ArrowRight, CheckCircle2, ChevronLeft, Sparkles, Layout, Palette, FileText } from 'lucide-react';
 import Logo from '../components/Logo';
+import { useAuth } from '../context/AuthContext';
 
 function BuilderPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { token } = useAuth();
   const [step, setStatus] = useState('idle'); // idle, generating, done
   const [formData, setFormData] = useState({
     businessName: location.state?.editData?.business_name || '',
@@ -36,7 +38,10 @@ function BuilderPage() {
     try {
       const response = await fetch('/api/generate-site', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(formData),
       });
       
@@ -60,7 +65,7 @@ function BuilderPage() {
     <div className="min-h-screen bg-brand-slate text-white font-inter flex flex-col">
       {/* Header */}
       <header className="px-8 py-6 border-b border-white/5 flex items-center justify-between">
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/dashboard')}>
           <Logo className="w-8 h-8" />
           <span className="text-xl font-bold tracking-tight font-jakarta">PANDA</span>
         </div>
