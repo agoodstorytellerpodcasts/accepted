@@ -18,7 +18,7 @@ require('dotenv').config();
 // Actually, I can just write the logic and explain that in production this would call a real SES/SendGrid API.
 // For the sake of this task, I'll simulate the "email sent" by logging it.
 
-const { generateProfessionalSiteHtml } = require('./layouts');
+const { generateSite } = require('./layouts');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -173,7 +173,7 @@ app.post('/api/generate-site', authenticateToken, (req, res) => {
   stmt.run(siteId, req.user.id, businessName, industry, description, JSON.stringify(pages), colorPreference || 'modern-slate');
 
   // Generate HTML
-  const htmlContent = generateProfessionalSiteHtml(businessName, industry, description, colorPreference);
+  const htmlContent = generateSite(businessName, industry, description, colorPreference);
   
   const siteDir = path.join(__dirname, 'generated_sites', siteId);
   if (!fs.existsSync(siteDir)) {
